@@ -1,6 +1,7 @@
 {
+  "homepage": "https://mern-stack-blog.vercel.app",
   "proxy": "http://localhost:4000",
-  "name": "frontend",
+  "name": "mern-stack-blog",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

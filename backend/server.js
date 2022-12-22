@@ -1,9 +1,11 @@
-require('dotenv').config()
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config({path: __dirname+'/.env'});
+}
 
 const express = require('express')
 const mongoose = require('mongoose')
 const workoutRoutes = require('./routes/workouts')
-
+const port = process.env.PORT || 4000;
 // express app
 const app = express()
 
@@ -19,14 +21,43 @@ app.use((req, res, next) => {
 app.use('/api/workouts', workoutRoutes)
 
 // connect to db
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+  poolSize: 1
+})
   .then(() => {
     console.log('connected to database')
     // listen to port
-    app.listen(process.env.PORT, () => {
-      console.log('listening for requests on port', process.env.PORT)
+    app.listen(port, () => {
+      console.log('listening for requests on port', port)
     })
   })
   .catch((err) => {
     console.log(err)
-  }) 
+  })
+
+// app.use('/some-route', require(path.join(__dirname, 'api', 'routes', 'workouts.js')));
+// GET all workouts
+router.get('/', require(path.join(__dirname, 'api', 'routes', 'workouts.js')))
+
+// GET a single workout
+router.get('/:id', require(path.join(__dirname, 'api', 'routes', 'workouts.js')))
+
+// POST a new workout
+router.post('/', require(path.join(__dirname, 'api', 'routes', 'workouts.js')))
+
+// DELETE a workout
+router.delete('/:id', require(path.join(__dirname, 'api', 'routes', 'workouts.js')))
+
+// UPDATE a workout
+router.patch('/:id', require(path.join(__dirname, 'api', 'routes', 'workouts.js')))
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../frontend', 'build')));
+  app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend', 'build', 'index.html'));
+  })
+}
