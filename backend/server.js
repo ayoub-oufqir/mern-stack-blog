@@ -1,7 +1,7 @@
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config({path: __dirname+'/.env'});
 }
-
+const path = require('path');
 const express = require('express')
 const mongoose = require('mongoose')
 const workoutRoutes = require('./routes/workouts')
@@ -22,11 +22,11 @@ app.use('/api/workouts', workoutRoutes)
 
 // connect to db
 mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-  poolSize: 1
+  // useNewUrlParser: true,
+  // useUnifiedTopology: true,
+  // useCreateIndex: true,
+  // useFindAndModify: false,
+  // poolSize: 1
 })
   .then(() => {
     console.log('connected to database')
@@ -41,19 +41,19 @@ mongoose.connect(process.env.MONGO_URI, {
 
 // app.use('/some-route', require(path.join(__dirname, 'api', 'routes', 'workouts.js')));
 // GET all workouts
-router.get('/', require(path.join(__dirname, 'api', 'routes', 'workouts.js')))
+// app.get('/', require(path.join(__dirname, 'api', 'routes', 'workouts.js')))
 
-// GET a single workout
-router.get('/:id', require(path.join(__dirname, 'api', 'routes', 'workouts.js')))
+// // GET a single workout
+// app.get('/:id', require(path.join(__dirname, 'api', 'routes', 'workouts.js')))
 
-// POST a new workout
-router.post('/', require(path.join(__dirname, 'api', 'routes', 'workouts.js')))
+// // POST a new workout
+// app.post('/', require(path.join(__dirname, 'api', 'routes', 'workouts.js')))
 
-// DELETE a workout
-router.delete('/:id', require(path.join(__dirname, 'api', 'routes', 'workouts.js')))
+// // DELETE a workout
+// app.delete('/:id', require(path.join(__dirname, 'api', 'routes', 'workouts.js')))
 
-// UPDATE a workout
-router.patch('/:id', require(path.join(__dirname, 'api', 'routes', 'workouts.js')))
+// // UPDATE a workout
+// app.patch('/:id', require(path.join(__dirname, 'api', 'routes', 'workouts.js')))
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../frontend', 'build')));
